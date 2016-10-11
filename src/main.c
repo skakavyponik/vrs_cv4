@@ -109,20 +109,49 @@ void blikanie(int cas)
 		  	  	  	  }
 		  GPIO_ToggleBits(GPIOA, GPIO_Pin_5);
 }
+
+
 int main(void)
 {
 	double AD_value=0;
-
-
+	double pred;
+	double BUTTON;
 	ADC_init();
 	Dio_init();
+	int stlacene;
+	int stlacj;
+	int stlacn;
+	int predstl;
+	int stav;
+
 
   while (1)
   {
 	  ADC_SoftwareStartConv(ADC1);
 	  while(!ADC_GetFlagStatus(ADC1, ADC_FLAG_EOC)){}
-	  AD_value=ADC_GetConversionValue(ADC1);
-	  blikanie(1000000);
+	  BUTTON=ADC_GetConversionValue(ADC1);
+	  if (pred<=BUTTON+15 && pred>=BUTTON-15) stlacj++;					//  ak sa stlaci a chvilu nepusti ani nekmita
+	  	  else stlacj=0;
+	  	  if (stlacj>50)
+	  	  {
+	  		  stlacene=1;
+	  	  	  stlacj=50;										// aby nepretieklo
+	  	  	  if (BUTTON<=2020 && BUTTON>=2009) stav=1;
+	  	  	  else if (BUTTON<=2928 && BUTTON>=2905) stav=2;
+	  	  	  else if (BUTTON<=3480 && BUTTON>=3458) stav=3;
+	  	  	  else if (BUTTON<=3666 && BUTTON>=3656) stav=4;
+	  	  	  else stav=5;
+	  	  }
+	  	  if (BUTTON>=3940 && BUTTON<=3955) stlacn++;					// ak sa pusti a nekmita
+	  	  else stlacn=0;
+	  	  if (stlacn>50)
+	  	  {
+	  		  stlacene=0;
+	  		  stlacn=50;  										// aby nepretieklo
+	  	  }
+	  	  if (stlacene!=predstl && stlacene==0) blikanie (stav*100000);     //zmena stavu z 1 na 0
+	  	  predstl=stlacene;
+	  	  pred=BUTTON;
   }
   return 0;
 }
