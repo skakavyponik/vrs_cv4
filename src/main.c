@@ -132,10 +132,10 @@ int main(void)
 	  BUTTON=ADC_GetConversionValue(ADC1);
 	  if (pred<=BUTTON+15 && pred>=BUTTON-15) stlacj++;					//  ak sa stlaci a chvilu nepusti ani nekmita
 	  	  else stlacj=0;
-	  	  if (stlacj>50)
+	  	  if (stlacj>4)
 	  	  {
 	  		  stlacene=1;
-	  	  	  stlacj=50;										// aby nepretieklo
+	  	  	  stlacj=4;										// aby nepretieklo
 	  	  	  if (BUTTON<=2020 && BUTTON>=2009) stav=1;
 	  	  	  else if (BUTTON<=2928 && BUTTON>=2905) stav=2;
 	  	  	  else if (BUTTON<=3480 && BUTTON>=3458) stav=3;
@@ -144,10 +144,10 @@ int main(void)
 	  	  }
 	  	  if (BUTTON>=3940 && BUTTON<=3955) stlacn++;					// ak sa pusti a nekmita
 	  	  else stlacn=0;
-	  	  if (stlacn>50)
+	  	  if (stlacn>4)
 	  	  {
 	  		  stlacene=0;
-	  		  stlacn=50;  										// aby nepretieklo
+	  		  stlacn=4;  										// aby nepretieklo
 	  	  }
 	  	  if (stlacene!=predstl && stlacene==0) blikanie (stav*100000);     //zmena stavu z 1 na 0
 	  	  predstl=stlacene;
